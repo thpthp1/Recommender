@@ -4,4 +4,4 @@ recommender/recommender/secret.py
 
 recommender/.DS_Store
 
-recommender/requirements.txt
+recommender/db.sqlite3
