@@ -5,7 +5,12 @@
     </head>
     <body>
         <!--<p> Home page is under construction </p>-->
-      	    <p> {{result}} </p>
+        {% for key, value in data %}
+          <tr>
+              <td> Key: {{ key }} </td>
+              <td> Value: {{ value }} </td><br>
+          </tr>
+          {% endfor %}
     </body>
 
 </html>

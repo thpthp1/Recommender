@@ -10,7 +10,7 @@ PORT = 8000
 
 # URL end-point
 AUTH_URL = "https://accounts.spotify.com/authorize"
-API_URL = 'https://api.spotify.com/v1/'
+API_URL = 'https://api.spotify.com/v1'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
 CALLBACK_URL = 'callback/q'
 redirect_uri = 'http://127.0.0.1:' + '{}/{}'.format(PORT, CALLBACK_URL)
@@ -50,14 +50,36 @@ def callback(request):
     encoded_client_info = base64.standard_b64encode(
                             '{}:{}'.format(client_ID, client_secret).encode())
 
-    header = {
+    auth_header = {
         'Authorization' : 'Basic {}'.format(encoded_client_info.decode())
     }
 
-    post_request = requests.post(TOKEN_URL, data=data, headers=header)
+    post_request = requests.post(TOKEN_URL, data=data, headers=auth_header)
 
+    # Get response data
     response_data = json.loads(post_request.text)
 
-    result = {'result' : json.dumps(response_data)}
+    auth_token = response_data['access_token']
+    token_type = response_data['token_type']
+    expires_in = response_data['expires_in']
+    refresh_token = response_data['refresh_token']
 
-    return render(request, 'mainapp/index.html', result)
+    auth_dict = {
+        'auth_token' : auth_token,
+        'token_type' : token_type,
+        'expires_in' : expires_in,
+        'refresh_token' : refresh_token
+    }
+
+    # Send in the authorization for user's info
+    API_ENDPOINT = "{}/me".format(API_URL)
+
+    user_header = {
+        "Authorization" : "Bearer {}".format(auth_token)
+    }
+
+    get_request = requests.get(API_ENDPOINT, headers=user_header)
+    user_data = json.loads(get_request.text)
+
+    return render(request, 'mainapp/index.html',
+        context={"data" : sorted(user_data.items())})
