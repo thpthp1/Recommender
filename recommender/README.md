@@ -5,5 +5,5 @@ To-do list:
   
   Collect user playlist data
   
-  Add tests \n
+  Add tests
   
