@@ -39,8 +39,9 @@ def index(request):
 
 
 def callback(request):
-    code = request.GET.get('code')
 
+    # getting the auth code
+    code = request.GET.get('code')
     data = {
         'grant_type' : 'authorization_code',
         'code' : code,
@@ -81,5 +82,4 @@ def callback(request):
     get_request = requests.get(API_ENDPOINT, headers=user_header)
     user_data = json.loads(get_request.text)
 
-    return render(request, 'mainapp/index.html',
-        context={"data" : sorted(user_data.items())})
+    return render(request, 'mainapp/index.html', context={"data" : sorted(user_data.items())})
