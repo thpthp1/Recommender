@@ -1,0 +1,23 @@
+app:
+  oauth2:
+    auth_address: https://accounts.spotify.com/authorize
+    client_id: ab4748be33a744a4a4be5e25c359fb5b
+    client_secret: 2dc0544cbf2f4f21893b51e84d003199
+    callback_uri: http://localhost:8080/callback/
+    scopes: user-read-private user-read-email
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  thymeleaf:
+    mode: HTML
+

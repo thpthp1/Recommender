@@ -1,14 +1,12 @@
 package com.example.recommender.models;
-import java.sql.Time;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-
+import java.sql.Time;
 @Entity
 public class Track {
 
     @Column(name = "track_id")
-    @NotEmpty
+    @Id
     private String id;
 
     @Column(name = "track_name")
