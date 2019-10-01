@@ -31,12 +31,19 @@ args_list = {
 auth_token = None
 
 
-def index(request):
+def signin(request):
     url_args = '&'.join(['{}={}'.format(key, val)
                         for key, val in args_list.items()])
     auth_path = '{}?{}'.format(AUTH_URL, url_args)
     return redirect(auth_path)
 
+def index(request):
+    user_data = request.session['user_data']
+    if user_data != None:
+        user_data = json.loads(user_data)
+        return render(request, 'mainapp/index.html', context={"data" : sorted(user_data.items())})
+    else:
+        return render(request, 'mainapp/index.html')
 
 def callback(request):
 
@@ -81,5 +88,5 @@ def callback(request):
 
     get_request = requests.get(API_ENDPOINT, headers=user_header)
     user_data = json.loads(get_request.text)
-
-    return render(request, 'mainapp/index.html', context={"data" : sorted(user_data.items())})
+    request.session['user_data'] = get_request.text
+    return redirect(index)
